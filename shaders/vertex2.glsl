@@ -1,42 +1,28 @@
 precision mediump float;
 
 attribute vec3 vPosition;
-attribute vec3 vColor;
-varying vec3 fColor;
-uniform vec3 theta;
+attribute vec2 vTexCoord; // Koordinat tekstur, dimensi vektor: 1 x 2 (u, v)
+attribute vec3 vNormal;
 
+varying vec2 fTexCoord;
+varying vec3 fPosition;
+varying vec3 fNormal;
 
-attribute vec2 a_texcoord;
-varying vec2 v_texcoord;
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 perspectiveMatrix;
+
+uniform mat3 normalMatrix;  // Membantu transformasi vektor normal
 
 void main() {
-  fColor = vColor;
+  gl_Position = perspectiveMatrix * viewMatrix * modelMatrix * vec4(vPosition, 1.0);
 
-  vec3 angle = radians(theta);
-  vec3 c = cos(angle);
-  vec3 s = sin(angle);
+  // Transfer koordinat tekstur ke fragment shader
+  fTexCoord = vTexCoord;
 
-  mat4 rx = mat4(
-    1.0, 0.0, 0.0, 0.0,
-    0.0, c.x, s.x, 0.0,
-    0.0, -s.x, c.x, 0.0,
-    0.0, 0.0, 0.0, 1.0
-  );
+  // Transfer nilai vektor normal ke fragment shader
+  fNormal = normalize(normalMatrix * vNormal);
 
-  mat4 ry = mat4(
-    c.y, 0.0, -s.y, 0.0,
-    0.0, 1.0, 0.0, 0.0,
-    s.y, 0.0, c.y, 0.0,
-    0.0, 0.0, 0.0, 1.0
-  );
-
-  mat4 rz = mat4(
-    c.z, s.z, 0.0, 0.0,
-    -s.z, c.z, 0.0, 0.0,
-    0.0, 0.0, 1.0, 0.0,
-    0.0, 0.0, 0.0, 1.0
-  );
-
-  gl_Position = vec4(vPosition, 1.0) * rz * ry * rx ;
-  v_texcoord = a_texcoord;
+  // Transfer nilai posisi verteks ke fragment shader
+  fPosition = vec3(modelMatrix * vec4(vPosition, 1.0));
 }
