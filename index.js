@@ -49,46 +49,54 @@
       // x, y, z             r, g, b
 
       //ABCD
-      -0.5, -0.8, 0.5,    0.0, 0.0, 1.0,    //A
-      -0.5, 0.8, 0.5,     1.0, 0.0, 0.0,    //B
-      -0.5, 0.8, 0.5,     1.0, 0.0, 0.0,    //B
-      0.5, 0.8, 0.5,      0.0, 0.0, 1.0,    //C
+      -0.5, -0.5, 0.5,    0.0, 0.0, 1.0,    //A
+      -0.5, 0.5, 0.5,     1.0, 0.0, 0.0,    //B
+      -0.5, 0.5, 0.5,     1.0, 0.0, 0.0,    //B
+      0.5, 0.5, 0.5,      0.0, 0.0, 1.0,    //C
 
-      0.5, 0.8, 0.5,      0.0, 0.0, 1.0,    //C
-      0.5, -0.8, 0.5,     1.0, 0.0, 0.0,    //D
-      0.5, -0.8, 0.5,     1.0, 0.0, 0.0,    //D
-      -0.5, -0.8, 0.5,    0.0, 0.0, 1.0,    //A
+      0.5, 0.5, 0.5,      0.0, 0.0, 1.0,    //C
+      0.5, -0.5, 0.5,     1.0, 0.0, 0.0,    //D
+      0.5, -0.5, 0.5,     1.0, 0.0, 0.0,    //D
+      -0.5, -0.5, 0.5,    0.0, 0.0, 1.0,    //A
       
       //DCGH
-      0.5, 0.8, 0.5,      0.0, 0.0, 1.0,    //C
-      0.5, 0.8, -0.5,     0.0, 0.0, 1.0,    //G
-      0.5, -0.8, 0.5,     0.0, 0.0, 1.0,    //D
-      0.5, -0.8, -0.5,    0.0, 0.0, 1.0,    //H
+      0.5, 0.5, 0.5,      0.0, 0.0, 1.0,    //C
+      0.5, 0.5, -0.5,     0.0, 0.0, 1.0,    //G
+      0.5, -0.5, 0.5,     0.0, 0.0, 1.0,    //D
+      0.5, -0.5, -0.5,    0.0, 0.0, 1.0,    //H
 
       //ABFE
-      -0.5, -0.8, 0.5,    0.0, 0.0, 1.0,    //A
-      -0.5, -0.8, -0.5,   0.0, 0.0, 1.0,    //E
-      -0.5, 0.8, 0.5,     0.0, 0.0, 1.0,    //B
-      -0.5, 0.8, -0.5,    0.0, 0.0, 1.0,    //F
+      -0.5, -0.5, 0.5,    0.0, 0.0, 1.0,    //A
+      -0.5, -0.5, -0.5,   0.0, 0.0, 1.0,    //E
+      -0.5, 0.5, 0.5,     0.0, 0.0, 1.0,    //B
+      -0.5, 0.5, -0.5,    0.0, 0.0, 1.0,    //F
 
       //EFGH
-      -0.5, -0.8, -0.5,   1.0, 0.0, 0.0,    //E
-      -0.5, 0.8, -0.5,    0.0, 0.0, 1.0,    //F
-      -0.5, 0.8, -0.5,    0.0, 0.0, 1.0,    //F
-      0.5, 0.8, -0.5,     1.0, 0.0, 0.0,    //G
+      -0.5, -0.5, -0.5,   1.0, 0.0, 0.0,    //E
+      -0.5, 0.5, -0.5,    0.0, 0.0, 1.0,    //F
+      -0.5, 0.5, -0.5,    0.0, 0.0, 1.0,    //F
+      0.5, 0.5, -0.5,     1.0, 0.0, 0.0,    //G
 
-      0.5, 0.8, -0.5,     1.0, 0.0, 0.0,    //G
-      0.5, -0.8, -0.5,    0.0, 0.0, 1.0,    //H
-      0.5, -0.8, -0.5,    0.0, 0.0, 1.0,    //H
-      -0.5, -0.8, -0.5,   1.0, 0.0, 0.0,    //E
+      0.5, 0.5, -0.5,     1.0, 0.0, 0.0,    //G
+      0.5, -0.5, -0.5,    0.0, 0.0, 1.0,    //H
+      0.5, -0.5, -0.5,    0.0, 0.0, 1.0,    //H
+      -0.5, -0.5, -0.5,   1.0, 0.0, 0.0,    //E
     ];
 
     var CubeVertexBufferObject = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, CubeVertexBufferObject);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(CubeVertices), gl.STATIC_DRAW);
+    
+
+    function setTexcoords(gl){
+      gl.bufferData(gl.ARRAY_BUFFER, 
+        new Float32Array(CubeVertices), 
+        gl.STATIC_DRAW);
+    }
 
     var vPosition = gl.getAttribLocation(program2, 'vPosition');
     var vColor = gl.getAttribLocation(program2, 'vColor');
+    var texcoordLocation = gl.getAttribLocation(program2, 'a_texcoord');
+
     gl.vertexAttribPointer(
       vPosition,  // variabel yang memegang posisi attribute di shader
       3,          // jumlah elemen per attribute
@@ -97,13 +105,53 @@
       6 * Float32Array.BYTES_PER_ELEMENT, // ukuran byte tiap verteks 
       0                                   // offset dari posisi elemen di array
     );
-    gl.vertexAttribPointer(vColor, 3, gl.FLOAT, gl.FALSE, 
-      6 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
+    gl.vertexAttribPointer(
+      vColor, 
+      3, 
+      gl.FLOAT, 
+      gl.FALSE, 
+      6 * Float32Array.BYTES_PER_ELEMENT, 
+      3 * Float32Array.BYTES_PER_ELEMENT
+    );
+    gl.vertexAttribPointer(
+      texcoordLocation,
+      2,
+      gl.FLOAT,
+      false,
+      11 * Float32Array.BYTES_PER_ELEMENT,
+      9 * Float32Array.BYTES_PER_ELEMENT
+    );
+    
 
     gl.enableVertexAttribArray(vPosition);
     gl.enableVertexAttribArray(vColor);
+    gl.enableVertexAttribArray(texcoordLocation);
 
     gl.uniform3fv(thetaLoc2, theta2);
+
+    // Txture
+    var texcoordbuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, texcoordbuffer);
+    
+
+    gl.vertexAttribPointer(texcoordLocation, 2, gl.FLOAT, false, 0, 0);
+
+    setTexcoords(gl);
+
+    //create a texture.
+    var texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
+      new Uint8Array([0,0,255,255]));
+
+    var image = new Image();
+    image.src = "images/images1.jpg";
+    image.addEventListener('load',function(){
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+      // gl.generateMipmap(gl.TEXTURE_2D);
+    })
 
   }
 

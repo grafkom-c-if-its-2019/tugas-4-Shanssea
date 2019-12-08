@@ -7,6 +7,7 @@ uniform vec3 theta;
 uniform vec3 vec;
 uniform float size;
 
+
 void main() {
   fColor = vColor;
   vec3 angle = radians(theta);
@@ -56,5 +57,7 @@ void main() {
 
   gl_Position = vec4(vPosition, 0.0, 1.0) *scale * rz * ry * rx;
   gl_Position = gl_Position * translate;
+
+  
 
 }
